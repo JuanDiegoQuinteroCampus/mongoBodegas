@@ -1,0 +1,569 @@
+use("db_campus_bodegas");
+db.createCollection("inventarios",{
+    validator: {
+        $jsonSchema: {
+          bsonType: "object",
+          required: ["_id", "id_bodega", "id_producto", "cantidad", "created_by", "update_by", "created_at", "updated_at", "deleted_at"],
+          properties: {
+            _id: {
+              bsonType: "number",
+              description: "_id should be int",
+            },
+            id_bodega: {
+              bsonType: "number",
+              description: "id_bodega should be int",
+            },
+            id_producto: {
+              bsonType: "number",
+              description: "id_producto should be number",
+            },
+            cantidad: {
+              bsonType: "number",
+              description: "cantidad should be number",
+            },
+            created_by: {
+              bsonType: "number",
+              description: "created_by should be number",
+            },
+            update_by: {
+              bsonType: "number",
+              description: "update_by should be number",
+            },
+            created_at: {
+              bsonType: "date",
+              description: "created_at should be date",
+            },
+            updated_at: {
+              bsonType: "date",
+              description: "updated_at should be date",
+            },
+            deleted_at: {
+              bsonType: "date",
+              description: "deleted_at should be date",
+            },
+          },
+        },
+      },
+})
+db.inventarios.insertMany([
+        {
+          "_id": 1,
+          "id_bodega": 101,
+          "id_producto": 201,
+          "cantidad": 50,
+          "created_by": 401,
+          "update_by": 401,
+          "created_at": ISODate("2023-08-16"),
+          "updated_at": ISODate("2023-08-16"),
+          "deleted_at": ISODate("2023-08-19")
+        },
+        {
+          "_id": 2,
+          "id_bodega": 102,
+          "id_producto": 202,
+          "cantidad": 75,
+          "created_by": 402,
+          "update_by": 402,
+          "created_at": ISODate("2023-08-17"),
+          "updated_at": ISODate("2023-08-17"),
+          "deleted_at": ISODate("2023-08-19")
+        },
+        {
+          "_id": 3,
+          "id_bodega": 103,
+          "id_producto": 203,
+          "cantidad": 30,
+          "created_by": 403,
+          "update_by": 403,
+          "created_at": ISODate("2023-08-18"),
+          "updated_at": ISODate("2023-08-18"),
+          "deleted_at": ISODate("2023-08-19")
+        },
+        {
+          "_id": 4,
+          "id_bodega": 104,
+          "id_producto": 204,
+          "cantidad": 90,
+          "created_by": 404,
+          "update_by": 404,
+          "created_at": ISODate("2023-08-19"),
+          "updated_at": ISODate("2023-08-19"),
+          "deleted_at": ISODate("2023-08-19")
+        },
+        {
+          "_id": 5,
+          "id_bodega": 105,
+          "id_producto": 205,
+          "cantidad": 15,
+          "created_by": 405,
+          "update_by": 405,
+          "created_at": ISODate("2023-08-20"),
+          "updated_at": ISODate("2023-08-20"),
+          "deleted_at": ISODate("2023-08-19")
+        }
+    
+      
+])
+
+
+use("db_campus_bodegas");
+db.createCollection("productos",{
+    validator: {
+        $jsonSchema: {
+          bsonType: "object",
+          required: ["_id", "nombre", "descripcion", "estado", "created_by", "update_by", "created_at", "updated_at", "deleted_at"],
+          properties: {
+            _id: {
+              bsonType: "number",
+              description: "_id should be int",
+            },
+            nombre: {
+              bsonType: "string",
+              description: "nombre should be string",
+            },
+            descripcion: {
+              bsonType: "string",
+              description: "descripcion should be string",
+            },
+            estado: {
+              bsonType: "number",
+              description: "estado should be number",
+            },
+            created_by: {
+              bsonType: "number",
+              description: "created_by should be number",
+            },
+            update_by: {
+              bsonType: "number",
+              description: "update_by should be number",
+            },
+            created_at: {
+              bsonType: "date",
+              description: "created_at should be date",
+            },
+            updated_at: {
+              bsonType: "date",
+              description: "updated_at should be date",
+            },
+            deleted_at: {
+              bsonType: "date",
+              description: "deleted_at should be date",
+            },
+          },
+        },
+      },
+})
+db.productos.insertMany([
+    {
+        "_id": 201,
+        "nombre": "Producto A",
+        "descripcion": "Descripción del Producto A",
+        "estado": 1,
+        "created_by": 401,
+        "update_by": 401,
+        "created_at": ISODate("2023-08-16"),
+        "updated_at": ISODate("2023-08-16"),
+        "deleted_at": ISODate("2023-08-16")
+      },
+      {
+        "_id": 202,
+        "nombre": "Producto B",
+        "descripcion": "Descripción del Producto B",
+        "estado": 1,
+        "created_by": 402,
+        "update_by": 402,
+        "created_at": ISODate("2023-08-17"),
+        "updated_at": ISODate("2023-08-17"),
+        "deleted_at": ISODate("2023-08-16")
+      },
+      {
+        "_id": 203,
+        "nombre": "Producto C",
+        "descripcion": "Descripción del Producto C",
+        "estado": 2,
+        "created_by": 403,
+        "update_by": 403,
+        "created_at": ISODate("2023-08-18"),
+        "updated_at": ISODate("2023-08-18"),
+        "deleted_at": ISODate("2023-08-16")
+      },
+      {
+        "_id": 204,
+        "nombre": "Producto D",
+        "descripcion": "Descripción del Producto D",
+        "estado": 1,
+        "created_by": 404,
+        "update_by": 404,
+        "created_at": ISODate("2023-08-19"),
+        "updated_at": ISODate("2023-08-19"),
+        "deleted_at": ISODate("2023-08-16")
+      },
+      {
+        "_id": 205,
+        "nombre": "Producto E",
+        "descripcion": "Descripción del Producto E",
+        "estado": 2,
+        "created_by": 405,
+        "update_by": 405,
+        "created_at": ISODate("2023-08-20"),
+        "updated_at": ISODate("2023-08-20"),
+        "deleted_at": ISODate("2023-08-16")
+      }
+])
+
+
+use("db_campus_bodegas");
+db.createCollection("historiales",{
+    validator: {
+        $jsonSchema: {
+          bsonType: "object",
+          required: ["_id", "cantidad", "id_bodega_origen", "id_bodega_destino", "id_inventario", "created_by", "update_by", "created_at", "updated_at", "deleted_at"],
+          properties: {
+            _id: {
+              bsonType: "number",
+              description: "_id should be int",
+            },
+            cantidad: {
+              bsonType: "number",
+              description: "cantidad should be number",
+            },
+            id_bodega_origen: {
+              bsonType: "number",
+              description: "id_bodega_origen should be int",
+            },
+            id_bodega_destino: {
+              bsonType: "number",
+              description: "id_bodega_destino should be int",
+            },
+            id_inventario: {
+              bsonType: "number",
+              description: "id_inventario should be int",
+            },
+            created_by: {
+              bsonType: "number",
+              description: "created_by should be number",
+            },
+            update_by: {
+              bsonType: "number",
+              description: "update_by should be number",
+            },
+            created_at: {
+              bsonType: "date",
+              description: "created_at should be date",
+            },
+            updated_at: {
+              bsonType: "date",
+              description: "updated_at should be date",
+            },
+            deleted_at: {
+              bsonType: "date",
+              description: "deleted_at should be date",
+            },
+          },
+        },
+      },
+})
+db.historiales.insertMany([
+    {
+      "_id": 301,
+      "cantidad": 20,
+      "id_bodega_origen": 101,
+      "id_bodega_destino": 102,
+      "id_inventario": 1,
+      "created_by": 401,
+      "update_by": 401,
+      "created_at": ISODate("2023-08-16"),
+      "updated_at": ISODate("2023-08-16"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 302,
+      "cantidad": 15,
+      "id_bodega_origen": 102,
+      "id_bodega_destino": 103,
+      "id_inventario": 2,
+      "created_by": 402,
+      "update_by": 402,
+      "created_at": ISODate("2023-08-17"),
+      "updated_at": ISODate("2023-08-17"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 303,
+      "cantidad": 10,
+      "id_bodega_origen": 103,
+      "id_bodega_destino": 104,
+      "id_inventario": 3,
+      "created_by": 403,
+      "update_by": 403,
+      "created_at": ISODate("2023-08-18"),
+      "updated_at": ISODate("2023-08-18"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 304,
+      "cantidad": 25,
+      "id_bodega_origen": 104,
+      "id_bodega_destino": 105,
+      "id_inventario": 4,
+      "created_by": 404,
+      "update_by": 404,
+      "created_at": ISODate("2023-08-19"),
+      "updated_at": ISODate("2023-08-19"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 305,
+      "cantidad": 18,
+      "id_bodega_origen": 105,
+      "id_bodega_destino": 101,
+      "id_inventario": 5,
+      "created_by": 405,
+      "update_by": 405,
+      "created_at": ISODate("2023-08-20"),
+      "updated_at": ISODate("2023-08-20"),
+      "deleted_at": ISODate("2023-08-20")
+    }
+  ]
+  )
+
+
+  use("db_campus_bodegas");
+db.createCollection("bodegas",{
+    validator: {
+        $jsonSchema: {
+          bsonType: "object",
+          required: ["_id", "nombre", "id_responsable", "estado", "created_by", "update_by", "created_at", "updated_at", "deleted_at"],
+          properties: {
+            _id: {
+              bsonType: "number",
+              description: "_id should be int",
+            },
+            nombre: {
+              bsonType: "string",
+              description: "nombre should be string",
+            },
+            id_responsable: {
+              bsonType: "number",
+              description: "id_responsable should be int",
+            },
+            estado: {
+              bsonType: "number",
+              description: "estado should be number",
+            },
+            created_by: {
+              bsonType: "number",
+              description: "created_by should be number",
+            },
+            update_by: {
+              bsonType: "number",
+              description: "update_by should be number",
+            },
+            created_at: {
+              bsonType: "date",
+              description: "created_at should be date",
+            },
+            updated_at: {
+              bsonType: "date",
+              description: "updated_at should be date",
+            },
+            deleted_at: {
+              bsonType: "date",
+              description: "deleted_at should be date",
+            },
+          },
+        },
+      },
+})
+db.bodegas.insertMany([
+    {
+      "_id": 101,
+      "nombre": "Bodega Principal",
+      "id_responsable": 501,
+      "estado": 1,
+      "created_by": 401,
+      "update_by": 401,
+      "created_at": ISODate("2023-08-16"),
+      "updated_at": ISODate("2023-08-16"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 102,
+      "nombre": "Bodega Secundaria",
+      "id_responsable": 502,
+      "estado": 1,
+      "created_by": 402,
+      "update_by": 402,
+      "created_at": ISODate("2023-08-17"),
+      "updated_at": ISODate("2023-08-17"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 103,
+      "nombre": "Bodega Terciaria",
+      "id_responsable": 503,
+      "estado": 1,
+      "created_by": 403,
+      "update_by": 403,
+      "created_at": ISODate("2023-08-18"),
+      "updated_at": ISODate("2023-08-18"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 104,
+      "nombre": "Bodega Cuaternaria",
+      "id_responsable": 504,
+      "estado": 1,
+      "created_by": 404,
+      "update_by": 404,
+      "created_at": ISODate("2023-08-19"),
+      "updated_at": ISODate("2023-08-19"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 105,
+      "nombre": "Bodega Quinaria",
+      "id_responsable": 505,
+      "estado": 1,
+      "created_by": 405,
+      "update_by": 405,
+      "created_at": ISODate("2023-08-20"),
+      "updated_at": ISODate("2023-08-20"),
+      "deleted_at": ISODate("2023-08-20")
+    }
+  ]
+  )
+
+
+  use("db_campus_bodegas");
+db.createCollection("users",{
+    validator: {
+        $jsonSchema: {
+          bsonType: "object",
+          required: ["_id", "nombre", "email", "email_verified_at", "estado", "created_by", "update_by", "foto", "password", "created_at", "updated_at", "deleted_at"],
+          properties: {
+            _id: {
+              bsonType: "number",
+              description: "_id should be int",
+            },
+            nombre: {
+              bsonType: "string",
+              description: "nombre should be string",
+            },
+            email: {
+              bsonType: "string",
+              description: "email should be string",
+            },
+            email_verified_at: {
+              bsonType: "date",
+              description: "email_verified_at should be date",
+            },
+            estado: {
+              bsonType: "number",
+              description: "estado should be number",
+            },
+            created_by: {
+              bsonType: "number",
+              description: "created_by should be number",
+            },
+            update_by: {
+              bsonType: "number",
+              description: "update_by should be number",
+            },
+            foto: {
+              bsonType: "string",
+              description: "foto should be string",
+            },
+            password: {
+              bsonType: "string",
+              description: "password should be string",
+            },
+            created_at: {
+              bsonType: "date",
+              description: "created_at should be date",
+            },
+            updated_at: {
+              bsonType: "date",
+              description: "updated_at should be date",
+            },
+            deleted_at: {
+              bsonType: "date",
+              description: "deleted_at should be date",
+            },
+          },
+        },
+      },
+})
+db.users.insertMany([
+    {
+      "_id": 401,
+      "nombre": "Usuario A",
+      "email": "usuarioa@example.com",
+      "email_verified_at": ISODate("2023-08-16"),
+      "estado": 1,
+      "created_by": 401,
+      "update_by": 401,
+      "foto": "ruta/de/imagen1.png",
+      "password": "hashed_password_1",
+      "created_at": ISODate("2023-08-16"),
+      "updated_at": ISODate("2023-08-16"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 402,
+      "nombre": "Usuario B",
+      "email": "usuariob@example.com",
+      "email_verified_at": ISODate("2023-08-17"),
+      "estado": 1,
+      "created_by": 402,
+      "update_by": 402,
+      "foto": "ruta/de/imagen2.png",
+      "password": "hashed_password_2",
+      "created_at": ISODate("2023-08-17"),
+      "updated_at": ISODate("2023-08-17"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 403,
+      "nombre": "Usuario C",
+      "email": "usuarioc@example.com",
+      "email_verified_at": ISODate("2023-08-18"),
+      "estado": 1,
+      "created_by": 403,
+      "update_by": 403,
+      "foto": "ruta/de/imagen3.png",
+      "password": "hashed_password_3",
+      "created_at": ISODate("2023-08-18"),
+      "updated_at": ISODate("2023-08-18"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 404,
+      "nombre": "Usuario D",
+      "email": "usuariod@example.com",
+      "email_verified_at": ISODate("2023-08-19"),
+      "estado": 1,
+      "created_by": 404,
+      "update_by": 404,
+      "foto": "ruta/de/imagen4.png",
+      "password": "hashed_password_4",
+      "created_at": ISODate("2023-08-19"),
+      "updated_at": ISODate("2023-08-19"),
+      "deleted_at": ISODate("2023-08-20")
+    },
+    {
+      "_id": 405,
+      "nombre": "Usuario E",
+      "email": "usuarioe@example.com",
+      "email_verified_at": ISODate("2023-08-20"),
+      "estado": 1,
+      "created_by": 405,
+      "update_by": 405,
+      "foto": "ruta/de/imagen5.png",
+      "password": "hashed_password_5",
+      "created_at": ISODate("2023-08-20"),
+      "updated_at": ISODate("2023-08-20"),
+      "deleted_at": ISODate("2023-08-20")
+    }
+  ]
+  )
