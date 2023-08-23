@@ -38,7 +38,7 @@ db.createCollection("inventarios",{
               description: "updated_at should be date",
             },
             deleted_at: {
-              bsonType: "date",
+              bsonType: ["null","date"],
               description: "deleted_at should be date",
             },
           },
@@ -146,7 +146,7 @@ db.createCollection("productos",{
               description: "updated_at should be date",
             },
             deleted_at: {
-              bsonType: "date",
+              bsonType: ["null","date"],
               description: "deleted_at should be date",
             },
           },
@@ -256,7 +256,7 @@ db.createCollection("historiales",{
               description: "updated_at should be date",
             },
             deleted_at: {
-              bsonType: "date",
+              bsonType: ["null","date"],
               description: "deleted_at should be date",
             },
           },
@@ -368,7 +368,7 @@ db.createCollection("bodegas",{
               description: "updated_at should be date",
             },
             deleted_at: {
-              bsonType: "date",
+              bsonType: ["null","date"],
               description: "deleted_at should be date",
             },
           },
@@ -487,7 +487,7 @@ db.createCollection("users",{
               description: "updated_at should be date",
             },
             deleted_at: {
-              bsonType: "date",
+              bsonType: ["null","date"],
               description: "deleted_at should be date",
             },
           },
