@@ -7,13 +7,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Expose } from 'class-transformer';
-import { IsDefined, IsInt, IsString, Matches } from 'class-validator';
+import { Expose, Transform } from 'class-transformer';
+import { IsDefined, IsInt, IsString, Matches, IsOptional } from 'class-validator';
 export default class InventariosDTO {
     constructor(data) {
         Object.assign(this, data);
         this._id = 0;
-        this.id_inventarios = 0;
+        // this.id_inventarios = 0;
         this.id_bodega = 0;
         this.id_producto = 0;
         this.cantidad = 0;
@@ -21,7 +21,7 @@ export default class InventariosDTO {
         this.update_by = 0;
         this.created_at = "";
         this.updated_at = '';
-        this.deleted_at = '';
+        this.deleted_at = null;
     }
 }
 __decorate([
@@ -30,12 +30,6 @@ __decorate([
     IsDefined({ message: 'El _id es obligatorio' }),
     __metadata("design:type", Number)
 ], InventariosDTO.prototype, "_id", void 0);
-__decorate([
-    Expose({ name: 'id_inventarios' }),
-    IsInt(),
-    IsDefined({ message: 'El id_inventarios es obligatorio' }),
-    __metadata("design:type", Number)
-], InventariosDTO.prototype, "id_inventarios", void 0);
 __decorate([
     Expose({ name: 'id_bodega' }),
     IsString(),
@@ -82,8 +76,14 @@ __decorate([
 ], InventariosDTO.prototype, "updated_at", void 0);
 __decorate([
     Expose({ name: 'deleted_at' }),
+    Transform(({ value }) => {
+        if (value === null || (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value))) {
+            return value;
+        }
+        return { message: () => { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD" }; } };
+    }),
+    IsOptional(),
     IsString(),
-    IsDefined({ message: 'La deleted_at es obligatoria' }),
-    Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'La deleted_at no tiene el formato correcto' }),
+    Matches(/^\d{4}-\d{2}-\d{2}$/, { message: () => { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD" }; } }),
     __metadata("design:type", String)
 ], InventariosDTO.prototype, "deleted_at", void 0);

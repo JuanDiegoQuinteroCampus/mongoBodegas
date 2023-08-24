@@ -1,5 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
-import { IsDefined, IsInt, IsDate, IsString, IsNumber, Matches } from 'class-validator';
+import { IsDefined, IsInt, IsDate, IsString, IsNumber, Matches, IsOptional } from 'class-validator';
 
 export default class HistorialesDTO {
     @Expose({ name: '_id' })
@@ -7,10 +7,10 @@ export default class HistorialesDTO {
     @IsDefined({ message: 'El _id es obligatorio' })
     _id: number;
 
-    @Expose({ name: 'id_historiales' })
+   /*  @Expose({ name: 'id_historiales' })
     @IsInt()
     @IsDefined({ message: 'El id_historiales es obligatorio' })
-    id_historiales: number;
+    id_historiales: number; */
 
     @Expose({ name: 'cantidad' })
     @IsNumber()
@@ -55,16 +55,21 @@ export default class HistorialesDTO {
     updated_at: string;
 
     @Expose({ name: 'deleted_at' })
+    @Transform(({ value }) => {
+        if (value === null || (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value))) {
+            return value; 
+        }return { message: () =>  { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD"}}}
+    })
+    @IsOptional()
     @IsString()
-    @IsDefined({ message: 'La deleted_at es obligatoria' })
-    @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'La deleted_at no tiene el formato correcto' })
-    deleted_at: string;
+    @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: () =>  { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD"}}})
+    deleted_at: string | null;
 
     
     constructor(data: Partial<HistorialesDTO>) {
         Object.assign(this, data);
         this._id = 0;
-        this.id_historiales = 0;
+        // this.id_historiales = 0;
         this.cantidad = 0;
         this.id_bodega_origen = 0;
         this.id_bodega_destino = 0;
@@ -73,6 +78,6 @@ export default class HistorialesDTO {
         this.update_by=0;
         this.created_at="";
         this.updated_at = '';
-        this.deleted_at = '';
+        this.deleted_at = null;
     }
 }

@@ -7,13 +7,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Expose } from 'class-transformer';
-import { IsDefined, IsInt, IsString, Matches, IsEmail } from 'class-validator';
+import { Expose, Transform } from 'class-transformer';
+import { IsDefined, IsInt, IsString, Matches, IsEmail, IsOptional } from 'class-validator';
 export default class UsersDTO {
     constructor(data) {
         Object.assign(this, data);
         this._id = 0;
-        this.id_users = 0;
+        // this.id_users = 0;
         this.nombre = 0;
         this.email = '';
         this.email_verified_at = '';
@@ -24,7 +24,7 @@ export default class UsersDTO {
         this.password = "";
         this.created_at = "";
         this.updated_at = '';
-        this.deleted_at = '';
+        this.deleted_at = null;
     }
 }
 __decorate([
@@ -33,12 +33,6 @@ __decorate([
     IsDefined({ message: 'El _id es obligatorio' }),
     __metadata("design:type", Number)
 ], UsersDTO.prototype, "_id", void 0);
-__decorate([
-    Expose({ name: 'id_users' }),
-    IsInt(),
-    IsDefined({ message: 'El id_users es obligatorio' }),
-    __metadata("design:type", Number)
-], UsersDTO.prototype, "id_users", void 0);
 __decorate([
     Expose({ name: 'nombre' }),
     IsString(),
@@ -104,8 +98,14 @@ __decorate([
 ], UsersDTO.prototype, "updated_at", void 0);
 __decorate([
     Expose({ name: 'deleted_at' }),
+    Transform(({ value }) => {
+        if (value === null || (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value))) {
+            return value;
+        }
+        return { message: () => { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD" }; } };
+    }),
+    IsOptional(),
     IsString(),
-    IsDefined({ message: 'La deleted_at es obligatoria' }),
-    Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'La deleted_at no tiene el formato correcto' }),
+    Matches(/^\d{4}-\d{2}-\d{2}$/, { message: () => { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD" }; } }),
     __metadata("design:type", String)
 ], UsersDTO.prototype, "deleted_at", void 0);

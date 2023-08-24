@@ -1,5 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
-import { IsDefined, IsInt, IsDate, IsString, IsNumber, Matches, IsIn } from 'class-validator';
+import { IsDefined, IsInt, IsDate, IsString, IsNumber, Matches, IsIn, IsOptional } from 'class-validator';
 
 export default class ProductosDTO {
     @Expose({ name: '_id' })
@@ -7,10 +7,10 @@ export default class ProductosDTO {
     @IsDefined({ message: 'El _id es obligatorio' })
     _id: number;
 
-    @Expose({ name: 'id_productos' })
-    @IsInt()
-    @IsDefined({ message: 'El id_productos es obligatorio' })
-    id_productos: number;
+    // @Expose({ name: 'id_productos' })
+    // @IsInt()
+    // @IsDefined({ message: 'El id_productos es obligatorio' })
+    // id_productos: number;
 
     @Expose({ name: 'nombre' })
     @IsString()
@@ -50,16 +50,20 @@ export default class ProductosDTO {
     updated_at: string;
 
     @Expose({ name: 'deleted_at' })
+    @Transform(({ value }) => {
+        if (value === null || (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value))) {
+            return value;  
+        }return { message: () =>  { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD"}}}
+    })
+    @IsOptional()
     @IsString()
-    @IsDefined({ message: 'La deleted_at es obligatoria' })
-    @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'La deleted_at no tiene el formato correcto' })
-    deleted_at: string;
-
+    @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: () =>  { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD"}}})
+    deleted_at: string | null;
     
     constructor(data: Partial<ProductosDTO>) {
         Object.assign(this, data);
         this._id = 0;
-        this.id_productos = 0;
+        // this.id_productos = 0;
         this.nombre = 0;
         this.descripcion = '';
         this.estado = 0;
@@ -67,6 +71,6 @@ export default class ProductosDTO {
         this.update_by=0;
         this.created_at="";
         this.updated_at = '';
-        this.deleted_at = '';
+        this.deleted_at = null;
     }
 }

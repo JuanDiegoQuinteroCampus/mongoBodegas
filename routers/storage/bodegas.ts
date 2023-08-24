@@ -1,5 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
-import { IsDefined, IsInt, IsDate, IsString, IsNumber, Matches } from 'class-validator';
+import { IsDefined, IsInt, IsDate, IsString, IsNumber, Matches, IsOptional } from 'class-validator';
 
 export default class BodegasDTO {
     @Expose({ name: '_id' })
@@ -7,10 +7,10 @@ export default class BodegasDTO {
     @IsDefined({ message: 'El _id es obligatorio' })
     _id: number;
 
-    @Expose({ name: 'id_bodegas' })
+    /* @Expose({ name: 'id_bodegas' })
     @IsInt()
     @IsDefined({ message: 'El id_bodegas es obligatorio' })
-    id_bodegas: number;
+    id_bodegas: number; */
 
     @Expose({ name: 'nombre' })
     @IsString()
@@ -49,24 +49,41 @@ export default class BodegasDTO {
     @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'La updated_at no tiene el formato correcto' })
     updated_at: string;
 
-    @Expose({ name: 'deleted_at' })
+   /*  @Expose({ name: 'deleted_at' })
+    @Transform(({ value }) => {
+        if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+            return value;  // Si es un string en formato de fecha, mantenlo como está
+        }
+        return null;  // Si no es un string en formato de fecha, conviértelo en nulo
+    })
+    @IsOptional()
     @IsString()
-    @IsDefined({ message: 'La deleted_at es obligatoria' })
     @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'La deleted_at no tiene el formato correcto' })
-    deleted_at: string;
-
+    deleted_at: string | null; */
+    @Expose({ name: 'deleted_at' })
+    @Transform(({ value }) => {
+        if (value === null || (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value))) {
+            return value;  // Si es null o un string en formato de fecha, mantenlo como está
+        }
+        /* throw new Error('La deleted_at debe ser null o tener el formato de fecha correcto'); */
+        return { message: () =>  { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD"}}}
+    })
+    @IsOptional()
+    @IsString()
+    @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: () =>  { throw { status: 400, message: "La deleted_at debe ser null o tener el formato de fecha correcto, AAAA-MM-DD"}}})
+    deleted_at: string | null;
     
     constructor(data: Partial<BodegasDTO>) {
         Object.assign(this, data);
         this._id = 0;
-        this.id_bodegas = 0;
+        // this.id_bodegas = 0;
         this.nombre = '';
         this.id_responsable = 0;
         this.estado = 0;
         this.created_by = 0;
         this.update_by=0;
         this.created_at="";
-        this.updated_at = '';
-        this.deleted_at = '';
+        this.updated_at = "";
+        this.deleted_at = null;
     }
 }
