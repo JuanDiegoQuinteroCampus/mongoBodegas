@@ -1,0 +1,118 @@
+// Realizar un EndPolnt que permita listar todas las bodegas ordenadas alfabéticamente.
+use("db_campus_bodegas");
+db.bodegas.find({}).sort({ nombre: 1 })
+
+// Realizar un EndPolnt que permita crear una bodegas.(agregar en los comentarios de la función los datos de entrada).
+use("db_campus_bodegas");
+db.bodegas.insertOne({
+    "_id": 106,
+    "nombre": "Bodega Quinaria",
+    "id_responsable": 506,
+    "estado": 1,
+    "created_by": 406,
+    "update_by": 406,
+    "created_at": ISODate("2023-08-21"),
+    "updated_at": ISODate("2023-08-21"),
+    "deleted_at": ISODate("2023-08-21")
+  });
+
+
+//   Realizar un EndPoint que permita listar todos los productos en orden
+//   descendente por el campo "Total".
+//   • El campo "Total" es la cantidad de unidades que la empresa tiene
+//   de este producto, considerando la unión de todas las bodegas, es
+//   decir que el dato como tal no existe en la base de datos,sino se debe
+//   calcular. Si la Bodega A tiene 1O unidades, la Bodega B tiene 5
+//   unidades y la Bodega C tiene 3 unidades. Total= 18.
+use("db_campus_bodegas");
+db.productos.aggregate([
+    {
+      $lookup: {
+        from: "inventarios",
+        localField: "_id",
+        foreignField: "id_producto",
+        as: "inventarios"
+      }
+    },
+    {
+      $addFields: {
+        Total: {
+          $sum: "$inventarios.cantidad"
+        }
+      }
+    },
+    
+    {
+      $group: {
+        _id: "$_id",
+        nombre: { $first: "$nombre" },
+        descripcion: { $first: "$descripcion" },
+        estado: { $first: "$estado" },
+        created_by: { $first: "$created_by" },
+        update_by: { $first: "$update_by" },
+        created_at: { $first: "$created_at" },
+        updated_at: { $first: "$updated_at" },
+        deleted_at: { $first: "$deleted_at" },
+        Total: { $first: "$Total" }
+      }
+    },
+    {
+      $sort: {
+        Total: -1
+      }
+    }
+  ]);
+
+
+// Realizar un EndPoint que permita insertar un productos y a su vez asigne
+// una cantidad inicial del mismo en la tabla inventarios en una de las bodegas
+// por default.
+use("db_campus_bodegas");
+db.productos.updateOne(
+  { _id: 206 },
+  {
+    $setOnInsert: {
+      nombre: 'producto100',
+      descripcion: 'producto10000',
+      estado: 2,
+      created_by: 20,
+      update_by: 234,
+      created_at: ISODate("2023-08-16"),
+      updated_at:ISODate("2023-08-16"),
+      deleted_at: null
+    }
+  },
+  { upsert: true }
+);
+
+db.inventarios.updateOne(
+  { _id:10,id_bodega: 106, id_producto: 206 },
+  {
+    $setOnInsert: {
+      cantidad: 200,
+      created_by: 20,
+      update_by: 401,
+      created_at: ISODate("2023-08-16"),
+      updated_at: ISODate("2023-08-16"),
+      deleted_at: null
+    }
+  },
+  { upsert: true }
+);
+
+
+
+// . Realizar un EndPoint que permita insertar registros en la tabla de
+// inventarios, los parámetros de entradadebenser
+// (id_producto,id_bodega,cantidad).
+// • La tabla no puede repetir la combinación de Bodega I Producto Por lo
+// tanto será necesario validar si el ingreso que se está realizado ya
+// existe o es una combinación totalmente nueva.
+// • Si es una combinación totalmente nueva, se debe hacer un lnsert,
+// considerando los datos ingresados.
+// • Si es una combinación existente, entonces se debe hacer un Update
+// a este registro, considerando la suma de la cantidad existente con la
+// cantidad nueva.
+// .
+
+
