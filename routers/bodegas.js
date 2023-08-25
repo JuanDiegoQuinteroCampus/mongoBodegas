@@ -2,13 +2,14 @@ import { Router } from "express";
 import con from '../db/atlas.js'
 import { ObjectId } from "bson";
 import { configGET } from "../limit/limit.js";
+import { middlewareVerify, proxyBodegas } from "../middleware/proxyBodegas.js";
 // import { middlewareVerify, proxySucursalAuto } from "../middleware/proxySucursalAuto.js";
 
 
 const appBodegas = Router();
 
 // 4. Realizar un EndPolnt que permita listar todas las bodegas ordenadas alfabeticamente
-appBodegas.get("/get/alphabetic", configGET(),async(req, res) => {
+appBodegas.get("/get/alphabetic", configGET(),middlewareVerify,async(req, res) => {
     if (!req.rateLimit) return; 
     console.log(req.rateLimit);
     
@@ -21,7 +22,7 @@ appBodegas.get("/get/alphabetic", configGET(),async(req, res) => {
 });
 
 // 5. Realizar un EndPolnt que permita crear una bodegas.(agregar en los comentarios de la función los datos de entrada).
-appBodegas.post("/post", configGET(),async(req, res) => {
+appBodegas.post("/post", configGET(),proxyBodegas,middlewareVerify, async(req, res) => {
     if (!req.rateLimit) return; 
 
     console.log(req.rateLimit);
@@ -34,7 +35,7 @@ appBodegas.post("/post", configGET(),async(req, res) => {
             ...req.body,
             created_at: new Date(req.body.created_at),
             updated_at: new Date(req.body.updated_at),
-            deleted_at: new Date(req.body.deleted_at)
+            deleted_at: req.body.deleted_at ? new Date(req.body.deleted_at) : null
         }
         
         let result = await bodegas.insertOne(date); 
@@ -48,16 +49,17 @@ appBodegas.post("/post", configGET(),async(req, res) => {
     
 });
 /* {
-    "_id": 106,
+    "_id": 107,
     "nombre": "Bodega Sexta",
     "id_responsable": 506,
     "estado": 2,
     "created_by": 406,
     "update_by": 406,
     "created_at": "2023-06-30",
-    "updated_at": "2023-08-22",
-    "deleted_at": "2023-08-30"
-  } */
+    "updated_at":"2002-12-12",
+    "deleted_at": "2005-03-22"
+ }
+  */
 
 
 
